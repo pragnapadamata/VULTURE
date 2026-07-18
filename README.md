@@ -18,14 +18,58 @@ can see it, and the dashboards show live numbers from the database.
 
 ---
 
-## Demo Video
+## Demo Videos
 
-▶️ **Watch the demo:** _<add your video link here>_
+- **Features walkthrough:** https://drive.google.com/file/d/1WxU1vmDxQ28MmjIcpd1mmahPb7DBnG_5/view?usp=sharing
+- **Backend walkthrough:** https://drive.google.com/file/d/1WxU1vmDxQ28MmjIcpd1mmahPb7DBnG_5/view?usp=sharing
 
-The video walks through the full flow: a company posts a job → it waits in the
-university's approval queue → an admin approves it → a student finds it under
-"Find Jobs" and applies with a resume → the admin views the resume and the
-analytics update.
+---
+
+## Features Walkthrough
+
+1. **Landing page** — product intro, stats pulled from the live backend, and entry
+   into the app.
+2. **Login (demo role selector)** — pick Student, Company, or Admin. No real
+   password sign-in; this is a demo flow by design.
+3. **Company → Post a Job** — enter role, salary, description, eligibility, and
+   deadline. The job is saved as **PENDING** and is not visible to students yet.
+4. **Admin → Approval Queue** — the placement cell reviews the pending job and
+   **Approves** (or Rejects) it, with an optional comment.
+5. **Student → Find Jobs** — the approved job now appears. The student applies with
+   name, email, roll number, and a resume (PDF/DOC). Applying twice is blocked.
+6. **Admin → Applicants & Analytics** — the admin opens the applicant's resume, and
+   the placement rate, charts, and notifications update from real data.
+
+---
+
+## Backend Walkthrough
+
+The backend is a Spring Boot application organized in layers:
+
+- **Model** (`model/`) — the database tables: `Posting`, `Application`,
+  `Notification`, `StatusHistory`. `Posting` has a `status` field
+  (PENDING → APPROVED / REJECTED / CLOSED) — this single field drives the whole
+  approval workflow.
+- **Repository** (`repo/`) — interfaces that talk to MySQL (e.g. `findByStatus`
+  returns only approved jobs).
+- **Controller** (`controller/`) — the REST API the frontend calls:
+  - `PostingController` — create a job (forced to PENDING on the server), return
+    only approved jobs to students, and approve/reject with history + notification.
+  - `ApplicationController` — apply with a resume upload, block duplicate
+    applications, and let the admin view/download a resume.
+  - `AnalyticsController` — calculate the placement rate and chart data live.
+  - `NotificationController` — list and mark notifications read.
+- **Scheduler** (`scheduler/`) — a task that runs every minute and moves approved
+  jobs past their deadline to CLOSED automatically.
+- **Config** (`config/`) — CORS setup and a data seeder that loads demo data on
+  first startup (and skips if data already exists).
+
+**Key point:** the approval gate is enforced in the database query, not hidden in
+the UI — a student can never receive an unapproved job.
+
+You can see the live backend responding here:
+- https://vulture-production.up.railway.app/api/analytics
+- https://vulture-production.up.railway.app/api/postings/approved
 
 ---
 
