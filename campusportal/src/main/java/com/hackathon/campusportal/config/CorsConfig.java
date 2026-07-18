@@ -8,14 +8,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
-    /** Comma-separated origins; local Angular dev server by default. */
-    @Value("${app.cors.origins:http://localhost:4200}")
+    /** Comma-separated origin patterns; open by default (demo portal, no auth by hackathon rules). */
+    @Value("${app.cors.origins:*}")
     private String origins;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(origins.split(","))
+                .allowedOriginPatterns(origins.split(","))
                 .allowedMethods("*");
     }
 }
