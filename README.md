@@ -6,7 +6,6 @@ see and apply only to approved jobs. Every posting is verified before a student
 can see it, and the dashboards show live numbers from the database.
 
 **Live app:** https://campus-portal-seven.vercel.app
-**Backend API:** https://vulture-production.up.railway.app
 
 ---
 
