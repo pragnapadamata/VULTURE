@@ -17,7 +17,6 @@ can see it, and the dashboards show live numbers from the database.
 - Vishwateja Gangishetty
 
 ---
-![Uploading Recording 2026-07-18 155432.gif…]()
 
 
 
