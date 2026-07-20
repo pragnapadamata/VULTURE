@@ -12,7 +12,7 @@ can see it, and the dashboards show live numbers from the database.
 ## Team
 
 - Padamata Pragna Sri Lalitha
-- Sri Harshith Gola
+- Sri Harshit Golla
 - Vishwateja Gangishetty
 
 ---
